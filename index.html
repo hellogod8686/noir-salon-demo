@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0b0c">
+  <meta name="description" content="NOIR SALON（ノワール サロン）の架空のWebサイト制作見本。上質なヘアデザインをテーマにしたポートフォリオ用デモサイトです。">
+  <title>NOIR SALON | Hair, redefined. — 制作見本</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0b0c;
+      --panel: #141414;
+      --panel2: #1c1c1d;
+      --ink: #f7f3ec;
+      --muted: #b4aea5;
+      --gold: #d7bc91;
+      --gold-dim: #9a805e;
+      --line: rgba(241,230,215,.15);
+      --max: 1200px;
+      --radius: 2px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 86px; }
+    body { margin: 0; min-width: 320px; background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+    body.modal-open { overflow: hidden; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    ::selection { background: var(--gold); color: #141414; }
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+    .container { width: min(calc(100% - 48px), var(--max)); margin-inline: auto; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .sample-banner { display: flex; align-items: center; justify-content: center; gap: 10px; background: #d2b98f; color: #1d1b18; text-align: center; padding: 8px 16px; font-size: 11px; letter-spacing: .08em; font-weight: 700; }
+    .sample-banner span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .sample-banner svg { width: 14px; height: 14px; }
+    .site-header { position: sticky; top: 0; z-index: 40; background: rgba(11,11,12,.92); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-bottom: 1px solid var(--line); }
+    .nav-inner { display: flex; min-height: 78px; align-items: center; justify-content: space-between; gap: 25px; }
+    .logo { display: inline-flex; align-items: center; flex-shrink: 0; gap: 10px; }
+    .logo-mark { display: grid; place-items: center; width: 34px; height: 38px; border: 1px solid var(--gold); font: italic 27px/1 Georgia, "Times New Roman", serif; color: var(--gold); padding-right: 3px; }
+    .logo-name { font: 700 18px/1.2 Georgia, "Times New Roman", serif; letter-spacing: .2em; white-space: nowrap; }
+    .logo-name small { display: block; font: 500 8px/1.6 -apple-system, sans-serif; color: var(--muted); letter-spacing: .35em; margin-top: 2px; }
+    .desktop-nav { display: flex; gap: 30px; align-items: center; margin-left: auto; }
+    .desktop-nav a { font-size: 11px; letter-spacing: .14em; font-weight: 700; transition: color .2s; }
+    .desktop-nav a:hover { color: var(--gold); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 13px; border: 1px solid transparent; text-transform: none; font-size: 11px; font-weight: 750; letter-spacing: .12em; min-height: 48px; padding: 13px 23px; transition: background .2s,color .2s,border-color .2s,transform .2s; text-align: center; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { color: #171410; background: var(--gold); }
+    .btn-primary:hover { background: #ead2a8; }
+    .btn-outline { color: var(--ink); border-color: rgba(255,255,255,.4); background: transparent; }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-arrow { font-size: 17px; font-weight: 400; line-height: 1; }
+    .menu-toggle { display: none; width: 44px; height: 44px; align-items: center; justify-content: center; background: transparent; border: 1px solid var(--line); color: var(--ink); }
+    .menu-toggle svg { width: 22px; height: 22px; }
+    .mobile-nav { display: none; background: #141414; border-top: 1px solid var(--line); }
+    .mobile-nav.open { display: block; }
+    .mobile-nav a, .mobile-nav button { width: 100%; display: block; text-align: left; color: var(--ink); background: none; border: 0; border-bottom: 1px solid var(--line); padding: 16px 24px; font-weight: 700; letter-spacing: .08em; font-size: 13px; }
+    .mobile-nav button { color: var(--gold); }
+
+    .hero { position: relative; overflow: hidden; }
+    .hero::before { position: absolute; content: ""; top: 0; right: 0; width: 60%; height: 100%; background: radial-gradient(ellipse at 64% 35%, rgba(143,99,48,.14), transparent 54%); pointer-events: none; }
+    .hero-grid { min-height: 670px; display: grid; grid-template-columns: 1.05fr .95fr; align-items: stretch; gap: 50px; padding-block: 45px 68px; }
+    .hero-copy { padding: 74px 0 42px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; position: relative; z-index: 2; }
+    .eyebrow { display: flex; gap: 12px; align-items: center; color: var(--gold); font-size: 10px; font-weight: 750; letter-spacing: .3em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; display: inline-block; width: 26px; height: 1px; background: var(--gold); flex: none; }
+    .hero-title { margin: 27px 0 0; font: 400 clamp(60px, 7.1vw, 115px)/.9 Georgia, "Times New Roman", serif; letter-spacing: -.065em; }
+    .hero-title em { display: block; font-weight: 400; font-style: italic; color: var(--gold); padding-left: 65px; }
+    .hero-ja { margin: 32px 0 0; font-size: clamp(18px, 2vw, 25px); font-weight: 650; letter-spacing: .13em; }
+    .hero-desc { max-width: 460px; margin: 17px 0 0; font-size: 13px; line-height: 2.3; color: var(--muted); letter-spacing: .04em; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 34px; }
+    .hero-meta { display: flex; align-items: center; gap: 19px; margin-top: 55px; padding-top: 20px; border-top: 1px solid var(--line); color: #a9a49b; font: 10px/1.7 -apple-system, sans-serif; letter-spacing: .17em; }
+    .hero-meta strong { color: var(--gold); font-weight: 700; }
+    .hero-art { position: relative; margin-top: 16px; min-height: 580px; background: #181615; border: 1px solid #332b22; overflow: hidden; isolation: isolate; }
+    .hero-art::after { position: absolute; content: ""; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(6,6,6,.66), transparent 38%, rgba(6,6,6,.08)); }
+    .hero-art svg { position: absolute; height: 100%; width: 100%; object-fit: cover; }
+    .hero-art-top, .hero-art-bottom { position: absolute; z-index: 2; left: 27px; right: 27px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; color: #eee7db; font: 10px Georgia, serif; letter-spacing: .2em; }
+    .hero-art-top { top: 27px; }
+    .hero-art-bottom { bottom: 24px; align-items: end; }
+    .hero-art-bottom span:first-child { font: italic 60px/.78 Georgia,serif; color: var(--gold); letter-spacing: -.07em; }
+    .hero-side-note { position: absolute; right: 13px; top: 50%; z-index: 2; writing-mode: vertical-rl; font: 9px -apple-system,sans-serif; letter-spacing: .24em; color: #e5d8c2; }
+    .ticker { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow: hidden; color: var(--gold); }
+    .ticker-inner { display: flex; width: max-content; align-items: center; gap: 36px; padding-block: 18px; animation: slide 30s linear infinite; }
+    .ticker span { white-space: nowrap; font: italic 22px Georgia,serif; letter-spacing: .03em; }
+    .ticker b { font: 14px Georgia,serif; font-weight: 400; }
+    @keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    section.content { padding-block: 105px; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 44px; }
+    .section-kicker { color: var(--gold); font: 11px Georgia, serif; letter-spacing: .2em; text-transform: uppercase; }
+    h2 { margin: 13px 0 0; font: 400 clamp(38px, 5.6vw, 67px)/1.13 Georgia,serif; letter-spacing: -.05em; }
+    h2 em { font-weight: 400; color: var(--gold); }
+    .section-desc { max-width: 360px; font-size: 12px; line-height: 2.1; color: var(--muted); margin: 0; }
+    .service-tabs { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 23px; }
+    .tab { padding: 9px 18px; background: transparent; color: #aaa49b; border: 1px solid var(--line); font-size: 11px; font-weight: 700; letter-spacing: .14em; min-height: 40px; }
+    .tab:hover { color: var(--ink); }
+    .tab[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: #161411; }
+    .service-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+    .service { display: grid; grid-template-columns: 1fr auto; gap: 10px 22px; background: var(--panel); border: 1px solid var(--line); padding: 26px 27px; align-items: start; transition: background .2s,border-color .2s; }
+    .service:hover { background: #1d1c1b; border-color: #594834; }
+    .service[hidden] { display: none !important; }
+    .service-group { font: 10px Georgia,serif; letter-spacing: .2em; color: var(--gold); text-transform: uppercase; }
+    .service h3 { margin: 6px 0 7px; font-size: 19px; letter-spacing: .04em; font-weight: 650; }
+    .service p { margin: 0; font-size: 11px; color: var(--muted); line-height: 1.9; }
+    .service-price { font: 20px Georgia,serif; white-space: nowrap; color: #e9dfcf; text-align: right; }
+    .service-price small { display: block; margin-top: 6px; font: 10px sans-serif; color: var(--muted); letter-spacing: .04em; }
+    .service .small-link { background: none; border: none; padding: 0; color: var(--gold); text-decoration: underline; text-underline-offset: 4px; font: 11px sans-serif; letter-spacing: .05em; text-align: left; justify-self: start; }
+    .service-tip { margin-top: 18px; color: var(--muted); font-size: 11px; }
+    .concept { background: #161514; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .concept-grid { display: grid; grid-template-columns: .92fr 1.08fr; align-items: center; gap: 85px; }
+    .concept-visual { min-height: 495px; overflow: hidden; position: relative; border: 1px solid #453a2b; background: radial-gradient(ellipse at 40% 65%, rgba(167,134,84,.3), transparent 42%), linear-gradient(145deg,#29231b,#0d0d0d 70%); }
+    .concept-visual::before { content: ""; position: absolute; width: 330px; height: 330px; border: 1px solid rgba(210,183,141,.5); border-radius: 50%; top: 11%; left: 50%; transform: translateX(-50%); box-shadow: 0 0 0 55px rgba(184,157,116,.04), 0 0 0 110px rgba(184,157,116,.04); }
+    .concept-visual::after { content: "N"; position: absolute; top: 39%; left: 50%; transform: translate(-50%,-50%); color: #ddc6a4; font: italic 240px/.8 Georgia,serif; text-shadow: 0 18px 60px #0009; }
+    .concept-visual .visual-label { position: absolute; bottom: 25px; left: 25px; right: 25px; color: #f0e7d8; font: 10px Georgia,serif; letter-spacing: .24em; z-index: 1; display: flex; justify-content: space-between; }
+    .concept h2 { margin-bottom: 23px; }
+    .concept-copy { max-width: 465px; color: #bcb4a8; font-size: 13px; line-height: 2.4; letter-spacing: .03em; }
+    .concept-points { display: grid; gap: 0; margin: 29px 0 0; }
+    .concept-point { display: flex; gap: 24px; padding: 17px 0; border-top: 1px solid var(--line); align-items: baseline; }
+    .concept-point:last-child { border-bottom: 1px solid var(--line); }
+    .concept-point .number { font: italic 18px Georgia,serif; color: var(--gold); }
+    .concept-point strong { font-size: 13px; letter-spacing: .05em; font-weight: 650; }
+    .look-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .look { position: relative; overflow: hidden; min-height: 370px; border: 1px solid #41392d; display: flex; align-items: end; padding: 24px; isolation: isolate; }
+    .look::before { position: absolute; inset: 0; content: ""; z-index: -1; transition: transform .6s ease; }
+    .look:hover::before { transform: scale(1.05); }
+    .look:nth-child(1)::before { background: radial-gradient(ellipse at 22% 18%,rgba(223,196,158,.36),transparent 29%), linear-gradient(150deg,#40332c 0%,#1a1615 43%,#070707 100%); }
+    .look:nth-child(2)::before { background: radial-gradient(ellipse at 70% 30%,rgba(166,144,132,.35),transparent 42%),linear-gradient(40deg,#110d0b,#302722 49%,#141312); }
+    .look:nth-child(3)::before { background: radial-gradient(ellipse at 39% 29%,rgba(216,180,121,.29),transparent 35%),linear-gradient(160deg,#342d22,#10100f 70%); }
+    .look-abstract { position: absolute; top: 15%; left: 50%; transform: translateX(-50%); height: 69%; width: 63%; border-radius: 50% 50% 30% 30%; border: 1px solid rgba(240,220,181,.22); box-shadow: inset 40px 18px 65px #07070777, -22px 12px 28px #07070755, 19px 0 0 -17px #ddc198aa; }
+    .look:nth-child(2) .look-abstract { transform: translateX(-50%) rotate(-14deg); border-radius: 49% 50% 55% 17%; }
+    .look:nth-child(3) .look-abstract { transform: translateX(-50%) rotate(13deg); border-radius: 30% 60% 50% 50%; }
+    .look-bottom { position: relative; z-index: 1; width: 100%; display: flex; align-items: end; justify-content: space-between; gap: 8px; }
+    .look h3 { margin: 0; font: italic 36px Georgia,serif; }
+    .look span { font: 9px sans-serif; letter-spacing: .2em; color: #cfc5b5; }
+    .look::after { content: "ART DIRECTION / DEMO"; position: absolute; top: 22px; left: 22px; color: #e9d8bb; font: 9px sans-serif; letter-spacing: .17em; }
+    .look-note { color: var(--muted); font-size: 11px; margin-top: 15px; }
+    .info-section { border-top: 1px solid var(--line); }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 42px; }
+    .info-card { border-top: 1px solid #6c5d48; padding-top: 23px; }
+    .info-card h3 { margin: 0 0 22px; font: 28px Georgia,serif; }
+    .info-card dl { margin: 0; }
+    .info-card dl > div { display: grid; grid-template-columns: 120px 1fr; gap: 12px; border-bottom: 1px solid var(--line); padding: 15px 0; font-size: 12px; }
+    .info-card dt { color: var(--gold); }
+    .info-card dd { margin: 0; color: #d5cec3; }
+    .info-card dd small { display: block; color: var(--muted); font-size: 10px; margin-top: 3px; }
+    .faq details { border-bottom: 1px solid var(--line); padding: 17px 0; }
+    .faq summary { cursor: pointer; font-weight: 650; font-size: 12px; list-style: none; display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; font: 25px Georgia,serif; color: var(--gold); }
+    .faq details[open] summary::after { content: "−"; }
+    .faq p { margin: 10px 0 0; color: var(--muted); font-size: 12px; line-height: 2.0; }
+    .cta { text-align: center; border-top: 1px solid var(--line); background: radial-gradient(ellipse at 50% 2%, rgba(140,107,71,.23), transparent 55%), #101010; padding: 100px 24px 110px; }
+    .cta h2 { margin: 14px 0 23px; font-size: clamp(55px, 8vw, 115px); line-height: .98; }
+    .cta h2 em { display: block; }
+    .cta p { margin: 0 auto 32px; color: var(--muted); font-size: 12px; line-height: 2.2; }
+    .cta .btn { min-width: 210px; }
+    .site-footer { border-top: 1px solid var(--line); padding: 40px 0 35px; }
+    .footer-grid { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 23px; }
+    .footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; color: var(--muted); font-size: 11px; }
+    .footer-links a:hover { color: var(--gold); }
+    .copyright { padding-top: 31px; margin-top: 30px; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; color: #827d76; font-size: 10px; letter-spacing: .06em; }
+    .floating-reserve { display: none; position: fixed; z-index: 30; left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); padding: 13px 17px; min-height: 52px; box-shadow: 0 7px 35px #000b; }
+    .modal[hidden] { display: none; }
+    .modal { position: fixed; z-index: 90; inset: 0; display: grid; place-items: center; padding: 16px; background: rgba(0,0,0,.79); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); overflow-y: auto; }
+    .modal-card { position: relative; max-width: 530px; width: 100%; max-height: min(92vh,800px); overflow-y: auto; background: #1a1918; border: 1px solid #756349; padding: 32px; box-shadow: 0 30px 120px #000c; }
+    .modal-close { position: absolute; top: 12px; right: 12px; border: 1px solid var(--line); background: transparent; color: var(--ink); width: 35px; height: 35px; font-size: 21px; }
+    .modal h2 { margin: 8px 0 9px; font: 37px Georgia,serif; }
+    .modal-note { font-size: 12px; color: var(--muted); line-height: 2; margin: 0 0 21px; }
+    .demo-warning { border-left: 2px solid var(--gold); padding: 12px 14px; background: #2b241b; color: #e8d7ba; font-size: 12px; line-height: 1.8; margin-bottom: 20px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px 13px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.full { grid-column: 1/-1; }
+    .field label { font-weight: 700; font-size: 11px; letter-spacing: .05em; }
+    .field input,.field select { background: #101010; border: 1px solid #58514a; color: white; min-height: 45px; padding: 11px 12px; border-radius: 0; font-size: 14px; width: 100%; }
+    .field input:focus,.field select:focus { border-color: var(--gold); outline: 1px solid var(--gold); }
+    .form-bottom { margin-top: 22px; display: flex; gap: 12px; }
+    .form-bottom .btn { flex: 1; }
+    .form-bottom .btn-outline { flex: 0 0 110px; }
+    .success[hidden] { display: none; }
+    .success { text-align: center; padding: 30px 0 12px; }
+    .success-icon { margin: 0 auto 18px; width: 55px; height: 55px; display: grid; place-items: center; border: 1px solid var(--gold); color: var(--gold); font: 30px Georgia,serif; }
+    .success p { font-size: 12px; line-height: 2.1; color: var(--muted); }
+    .success strong { color: var(--ink); }
+    .success .btn { margin-top: 16px; }
+    @media (max-width: 1000px) {
+      .desktop-nav { gap: 18px; }
+      .hero-grid { gap: 20px; grid-template-columns: 1fr 1fr; }
+      .hero-title { font-size: clamp(57px,8vw,95px); }
+      .concept-grid { gap: 36px; }
+    }
+    @media (max-width: 760px) {
+      html { scroll-padding-top: 70px; }
+      .container { width: min(calc(100% - 34px),var(--max)); }
+      .sample-banner { font-size: 10px; }
+      .sample-banner .long { display: none; }
+      .nav-inner { min-height: 66px; }
+      .logo-name { font-size: 16px; }
+      .desktop-nav,.header-book { display: none; }
+      .menu-toggle { display: inline-flex; }
+      .hero-grid { grid-template-columns: 1fr; min-height: 0; gap: 14px; padding-top: 8px; padding-bottom: 46px; }
+      .hero-copy { padding: 45px 0 10px; }
+      .hero-title { font-size: clamp(69px, 15vw, 100px); margin-top: 24px; }
+      .hero-title em { padding-left: 42px; }
+      .hero-desc { font-size: 12px; }
+      .hero-ja { margin-top: 26px; }
+      .hero-actions { margin-top: 24px; }
+      .hero-meta { margin-top: 34px; }
+      .hero-art { margin-top: 8px; min-height: 460px; max-height: 610px; aspect-ratio: 4/5; }
+      section.content { padding-block: 70px; }
+      .section-head { align-items: flex-start; flex-direction: column; gap: 16px; margin-bottom: 28px; }
+      .section-desc { max-width: 100%; }
+      .service-list { grid-template-columns: 1fr; }
+      .concept-grid { grid-template-columns: 1fr; }
+      .concept-visual { min-height: 370px; order: 2; }
+      .concept-copy { max-width: 100%; }
+      .look-grid { grid-template-columns: 1fr 1fr; }
+      .look { min-height: 300px; }
+      .look:last-child { grid-column: 1 / -1; min-height: 255px; }
+      .info-grid { grid-template-columns: 1fr; gap: 54px; }
+      .cta { padding: 80px 20px 100px; }
+      .floating-reserve { display: inline-flex; }
+      .site-footer { padding-bottom: 90px; }
+    }
+    @media (max-width: 450px) {
+      .hero-title { font-size: 16.7vw; }
+      .hero-art { min-height: 360px; }
+      .hero-actions .btn { flex: 1; padding-inline: 12px; }
+      .service { padding: 20px; gap: 9px; }
+      .service h3 { font-size: 17px; }
+      .service-price { font-size: 18px; }
+      .look { min-height: 245px; padding: 15px; }
+      .look:last-child { min-height: 220px; }
+      .look h3 { font-size: 29px; }
+      .look span { font-size: 8px; }
+      .info-card dl > div { grid-template-columns: 90px 1fr; }
+      .modal-card { padding: 28px 18px 19px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .form-bottom { flex-direction: column; }
+      .form-bottom .btn-outline { flex: auto; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sample-banner" role="note" aria-label="架空のサロンの制作見本">
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 7v6m0 4h.01"/></svg> PORTFOLIO DEMO</span>
+    <span class="long">このサイトは架空の美容室の制作見本です。実在する店舗・予約サービスではありません。</span>
+    <span class="short">架空のサロン／予約はデモです</span>
+  </div>
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a class="logo" href="#top" aria-label="NOIR SALON トップへ">
+        <span class="logo-mark" aria-hidden="true">N</span>
+        <span class="logo-name">NOIR SALON<small>HAIR DESIGN STUDIO</small></span>
+      </a>
+      <nav class="desktop-nav" aria-label="メインナビゲーション">
+        <a href="#concept">CONCEPT</a>
+        <a href="#menu">MENU</a>
+        <a href="#lookbook">LOOK BOOK</a>
+        <a href="#access">ACCESS</a>
+      </nav>
+      <button class="btn btn-primary header-book" type="button" data-book>予約デモ <span class="btn-arrow" aria-hidden="true">↗</span></button>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobile-nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="モバイルメニュー">
+      <a href="#concept">CONCEPT — コンセプト</a>
+      <a href="#menu">MENU — メニュー</a>
+      <a href="#lookbook">LOOK BOOK — ギャラリー</a>
+      <a href="#access">ACCESS — 店舗情報</a>
+      <button type="button" data-book>予約フォームを試す ↗</button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">PRIVATE HAIR DESIGN STUDIO</div>
+          <h1 class="hero-title" id="hero-title">BE<br>YOUR<br><em>ICON.</em></h1>
+          <div class="hero-ja">その髪に、意志を。</div>
+          <p class="hero-desc">媚びない美しさ。飾らない個性。<br>一人ひとりの輪郭と感性を読み解き、<br>あなたらしさをデザインする。</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" type="button" data-book>予約を体験する <span class="btn-arrow" aria-hidden="true">↗</span></button>
+            <a class="btn btn-outline" href="#menu">MENUを見る <span class="btn-arrow" aria-hidden="true">↗</span></a>
+          </div>
+          <div class="hero-meta"><span>DESIGN IS <strong>PERSONAL.</strong></span><span>OSAKA / JAPAN</span><span>EST. 2026 <abbr title="架空の設定">*</abbr></span></div>
+        </div>
+        <div class="hero-art" role="img" aria-label="黒とブロンズを基調に、髪の流れを抽象的に描いたサロンのオリジナルグラフィック">
+          <svg viewBox="0 0 600 760" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <radialGradient id="g1"><stop stop-color="#8b694e"/><stop offset=".54" stop-color="#44362c"/><stop offset="1" stop-color="#151310"/></radialGradient>
+              <linearGradient id="hair" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#16120f"/><stop offset=".25" stop-color="#4b3122"/><stop offset=".49" stop-color="#191310"/><stop offset=".73" stop-color="#79563f"/><stop offset="1" stop-color="#0e0b0a"/></linearGradient>
+              <linearGradient id="face" x1="0" x2="1"><stop stop-color="#4c3026"/><stop offset=".28" stop-color="#b18a71"/><stop offset=".58" stop-color="#e0bda1"/><stop offset="1" stop-color="#4c3026"/></linearGradient>
+              <linearGradient id="body" x1="0" x2="1"><stop stop-color="#070707"/><stop offset=".5" stop-color="#3a2e28"/><stop offset="1" stop-color="#070707"/></linearGradient>
+              <filter id="blur"><feGaussianBlur stdDeviation="22"/></filter>
+            </defs>
+            <rect width="600" height="760" fill="url(#g1)"/>
+            <ellipse cx="370" cy="302" rx="210" ry="290" fill="#aa815c" opacity=".16" filter="url(#blur)"/>
+            <circle cx="325" cy="280" r="246" fill="none" stroke="#a78b6e" opacity=".3"/>
+            <circle cx="325" cy="280" r="211" fill="none" stroke="#c5a47a" opacity=".14"/>
+            <path d="M91 760C127 624 187 587 275 563c17 0 79 0 97-4 92 22 162 81 190 201Z" fill="url(#body)"/>
+            <path d="M155 600C90 480 118 366 131 258 150 105 245 37 345 63c130 26 170 164 131 296-22 92-23 177 37 244-73 32-161 30-225 8-52 21-93 16-133-11Z" fill="url(#hair)"/>
+            <path d="M250 464c13 65 27 93 58 126 46-24 61-81 63-125Z" fill="#86604c"/>
+            <path d="M212 284c5-99 55-137 118-139 75-4 116 65 108 173-9 141-74 218-133 215-61-4-99-108-93-249Z" fill="url(#face)"/>
+            <path d="M238 358c18-12 37-13 56-5m70-2c15-9 32-9 51 1" fill="none" stroke="#483025" stroke-width="7" stroke-linecap="round" opacity=".76"/>
+            <path d="M271 367q13 9 26 0m69-1q13 8 24-1" fill="none" stroke="#231914" stroke-width="3" stroke-linecap="round"/>
+            <path d="M336 366q-13 42-14 58c4 8 14 10 24 9" fill="none" stroke="#7e5343" stroke-width="4" opacity=".76"/>
+            <path d="M300 461q26 11 56-1" fill="none" stroke="#6b3b36" stroke-width="5" stroke-linecap="round"/>
+            <path d="M199 356C160 179 220 88 333 98c135 14 153 108 124 249-12-79-42-132-75-146-76 56-144 65-183 155Z" fill="url(#hair)"/>
+            <path d="M184 192C158 354 199 483 178 624M215 137C192 267 200 465 239 586M444 181C470 311 421 508 468 607" fill="none" stroke="#ad8260" stroke-width="8" opacity=".29" stroke-linecap="round"/>
+            <path d="M167 500C158 563 140 616 111 676M480 425c-19 99 5 169 55 231" fill="none" stroke="#ddbd96" stroke-width="3" opacity=".21"/>
+            <path d="M198 581q94 80 147 94 72-26 121-86" fill="none" stroke="#d5bc98" stroke-width="2" opacity=".25"/>
+            <path d="M0 0h600v760H0z" fill="none" stroke="#ceb18a" opacity=".1" stroke-width="20"/>
+          </svg>
+          <div class="hero-art-top"><span>NOIR / EDITORIAL STUDY</span><span>001—026</span></div>
+          <div class="hero-side-note">ARTWORK / ORIGINAL VECTOR</div>
+          <div class="hero-art-bottom"><span>N.</span><span>BE DISTINCTLY YOU.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ticker" aria-hidden="true"><div class="ticker-inner">
+      <span>CUT &amp; FORM</span><b>✦</b><span>COLOR &amp; EXPRESSION</span><b>✦</b><span>CARE &amp; QUALITY</span><b>✦</b><span>YOUR OWN STYLE</span><b>✦</b>
+      <span>CUT &amp; FORM</span><b>✦</b><span>COLOR &amp; EXPRESSION</span><b>✦</b><span>CARE &amp; QUALITY</span><b>✦</b><span>YOUR OWN STYLE</span><b>✦</b>
+    </div></div>
+
+    <section class="content container" id="menu" aria-labelledby="menu-title">
+      <div class="section-head">
+        <div><div class="section-kicker">01 / OUR SERVICES</div><h2 id="menu-title">The <em>menu.</em></h2></div>
+        <p class="section-desc">理想を形にするためのシンプルなメニュー。カウンセリングから仕上げまで、丁寧に向き合う時間を。</p>
+      </div>
+      <div class="service-tabs" role="group" aria-label="メニューの絞り込み">
+        <button class="tab" type="button" data-filter="all" aria-pressed="true">ALL</button>
+        <button class="tab" type="button" data-filter="cut" aria-pressed="false">CUT</button>
+        <button class="tab" type="button" data-filter="color" aria-pressed="false">COLOR</button>
+        <button class="tab" type="button" data-filter="care" aria-pressed="false">CARE</button>
+      </div>
+      <div class="service-list" id="service-list">
+        <article class="service" data-category="cut" data-label="デザインカット">
+          <div><div class="service-group">CUT / 01</div><h3>デザインカット</h3><p>骨格・髪質・ライフスタイルに合わせたカット。</p></div>
+          <div class="service-price">¥6,600<small>約60分</small></div>
+          <button class="small-link" type="button" data-book="デザインカット">このメニューで試す ↗</button>
+        </article>
+        <article class="service" data-category="cut" data-label="前髪・顔まわりカット">
+          <div><div class="service-group">CUT / 02</div><h3>前髪・顔まわりカット</h3><p>印象をさりげなく変えるポイントカット。</p></div>
+          <div class="service-price">¥2,200<small>約30分</small></div>
+          <button class="small-link" type="button" data-book="前髪・顔まわりカット">このメニューで試す ↗</button>
+        </article>
+        <article class="service" data-category="color" data-label="ワンカラー">
+          <div><div class="service-group">COLOR / 01</div><h3>ワンカラー</h3><p>透明感とツヤを引き出すパーソナルカラー。</p></div>
+          <div class="service-price">¥8,800<small>約90分</small></div>
+          <button class="small-link" type="button" data-book="ワンカラー">このメニューで試す ↗</button>
+        </article>
+        <article class="service" data-category="color" data-label="デザインカラー">
+          <div><div class="service-group">COLOR / 02</div><h3>デザインカラー</h3><p>ニュアンスと奥行きをつくる個性派カラー。</p></div>
+          <div class="service-price">¥14,300<small>約150分</small></div>
+          <button class="small-link" type="button" data-book="デザインカラー">このメニューで試す ↗</button>
+        </article>
+        <article class="service" data-category="care" data-label="プレミアムヘアケア">
+          <div><div class="service-group">CARE / 01</div><h3>プレミアムヘアケア</h3><p>うるおいとしなやかさを補う集中ケア。</p></div>
+          <div class="service-price">¥5,500<small>約45分</small></div>
+          <button class="small-link" type="button" data-book="プレミアムヘアケア">このメニューで試す ↗</button>
+        </article>
+        <article class="service" data-category="care" data-label="ヘッドスパ">
+          <div><div class="service-group">CARE / 02</div><h3>ヘッドスパ</h3><p>頭皮をやさしく整えるリフレッシュケア。</p></div>
+          <div class="service-price">¥4,400<small>約40分</small></div>
+          <button class="small-link" type="button" data-book="ヘッドスパ">このメニューで試す ↗</button>
+        </article>
+      </div>
+      <p class="service-tip" id="filter-status" role="status" aria-live="polite">6件のメニューを表示中 ／ ※ 料金・所要時間はすべて架空の設定です。</p>
+    </section>
+
+    <section class="content concept" id="concept" aria-labelledby="concept-title">
+      <div class="container concept-grid">
+        <div class="concept-visual" role="img" aria-label="NOIRの頭文字をモチーフにしたブロンズ色の抽象グラフィック"><div class="visual-label"><span>FORM FOLLOWS FEELING</span><span>NOIR / N°01</span></div></div>
+        <div>
+          <div class="section-kicker">02 / THE PHILOSOPHY</div>
+          <h2 id="concept-title">Beauty has<br><em>no rules.</em></h2>
+          <p class="concept-copy">“似合う”だけでは終わらない。<br>大切なのは、鏡に映る自分を好きでいられること。<br>NOIRは、トレンドをなぞるのではなく、あなたの中にある魅力を見つけ、引き出すヘアデザインを目指します。</p>
+          <div class="concept-points">
+            <div class="concept-point"><span class="number">01</span><strong>PERSONAL — あなたらしさを第一に</strong></div>
+            <div class="concept-point"><span class="number">02</span><strong>DETAIL — 細部まで妥協しない</strong></div>
+            <div class="concept-point"><span class="number">03</span><strong>CONFIDENCE — 自分を好きになるスタイルへ</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content container" id="lookbook" aria-labelledby="look-title">
+      <div class="section-head">
+        <div><div class="section-kicker">03 / VISUAL CONCEPT</div><h2 id="look-title">Look <em>book.</em></h2></div>
+        <p class="section-desc">ブランドの世界観を伝える3つのアートスタディ。写真の代わりにオリジナルの抽象グラフィックを使用しています。</p>
+      </div>
+      <div class="look-grid">
+        <div class="look"><div class="look-abstract" aria-hidden="true"></div><div class="look-bottom"><h3>01. Form</h3><span>THE SHAPE</span></div></div>
+        <div class="look"><div class="look-abstract" aria-hidden="true"></div><div class="look-bottom"><h3>02. Tone</h3><span>THE MOOD</span></div></div>
+        <div class="look"><div class="look-abstract" aria-hidden="true"></div><div class="look-bottom"><h3>03. Flow</h3><span>THE MOTION</span></div></div>
+      </div>
+      <p class="look-note">※ 実際の施術事例ではありません。実店舗用に制作するときは、許可を得た写真に差し替えてください。</p>
+    </section>
+
+    <section class="content container info-section" id="access" aria-labelledby="info-title">
+      <div class="section-head">
+        <div><div class="section-kicker">04 / INFORMATION</div><h2 id="info-title">Find <em>us.</em></h2></div>
+        <p class="section-desc">都市の喧騒を離れて、自分と向き合う時間を。<br>以下はWeb制作見本用の架空の店舗情報です。</p>
+      </div>
+      <div class="info-grid">
+        <div class="info-card">
+          <h3>Salon information</h3>
+          <dl>
+            <div><dt>店舗名</dt><dd>NOIR SALON（ノワール サロン）</dd></div>
+            <div><dt>所在地</dt><dd>大阪市内（架空の設定）<small>実在する住所や店舗への案内ではありません</small></dd></div>
+            <div><dt>営業時間</dt><dd>10:00〜20:00（架空）</dd></div>
+            <div><dt>定休日</dt><dd>毎週月曜日（架空）</dd></div>
+            <div><dt>ご予約</dt><dd>本サイトの予約フォームで操作を体験できます<small>データは送信・保存されません</small></dd></div>
+          </dl>
+        </div>
+        <div class="info-card faq">
+          <h3>Frequently asked</h3>
+          <details><summary>当日の予約はできますか？</summary><p>本サイトは制作見本のため、実際の予約はできません。予約フォームの操作のみお試しいただけます。</p></details>
+          <details><summary>メニューの金額は本物ですか？</summary><p>すべての料金・所要時間はデザイン確認のためのサンプルです。実店舗の料金ではありません。</p></details>
+          <details><summary>サイト制作を依頼する場合は？</summary><p>このページを作成した制作者へ直接ご相談ください。このサンプル内に実際の連絡先は掲載していません。</p></details>
+          <details><summary>予約フォームの情報はどこに送られますか？</summary><p>どこにも送信されません。入力された情報はページ内でのみ扱われ、閉じると破棄されます。</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" aria-labelledby="cta-title">
+      <div class="section-kicker">YOUR STYLE, YOUR STORY</div>
+      <h2 id="cta-title">Own your<br><em>identity.</em></h2>
+      <p>あなたの“らしさ”を、もっと自由に。<br>この予約ボタンからデモフォームを操作できます。</p>
+      <button type="button" class="btn btn-primary" data-book>予約デモを開く <span class="btn-arrow" aria-hidden="true">↗</span></button>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <a class="logo" href="#top" aria-label="ページの先頭へ"><span class="logo-mark" aria-hidden="true">N</span><span class="logo-name">NOIR SALON<small>HAIR DESIGN STUDIO</small></span></a>
+        <div class="footer-links"><a href="#concept">CONCEPT</a><a href="#menu">MENU</a><a href="#lookbook">LOOK BOOK</a><a href="#access">ACCESS</a><a href="#top">BACK TO TOP ↑</a></div>
+      </div>
+      <div class="copyright"><span>© <span id="copyright-year">2026</span> NOIR SALON — PORTFOLIO DEMO.</span><span>FICTIONAL BRAND / DESIGN SAMPLE ONLY</span></div>
+    </div>
+  </footer>
+
+  <button class="btn btn-primary floating-reserve" type="button" data-book>予約フォームを体験する <span class="btn-arrow" aria-hidden="true">↗</span></button>
+
+  <div class="modal" id="booking-modal" role="dialog" aria-modal="true" aria-labelledby="booking-title" hidden>
+    <div class="modal-card">
+      <button class="modal-close" type="button" id="modal-close" aria-label="予約デモを閉じる">×</button>
+      <div id="form-screen">
+        <div class="section-kicker">RESERVATION / DEMO</div>
+        <h2 id="booking-title">Book your visit.</h2>
+        <p class="modal-note">フォームの動作確認ができます。入力内容は外部に送られません。</p>
+        <div class="demo-warning"><strong>これはデモ画面です。</strong><br>実際の予約・受付は行われません。実名や個人の連絡先を入力しなくても、架空の情報でお試しいただけます。</div>
+        <form id="booking-form">
+          <div class="form-grid">
+            <div class="field full"><label for="customer-name">お名前（デモ用） *</label><input id="customer-name" name="name" placeholder="例：サンプル 太郎" autocomplete="off" required maxlength="40"></div>
+            <div class="field full"><label for="customer-menu">ご希望のメニュー *</label><select id="customer-menu" name="menu" required><option value="">選択してください</option><option>デザインカット</option><option>前髪・顔まわりカット</option><option>ワンカラー</option><option>デザインカラー</option><option>プレミアムヘアケア</option><option>ヘッドスパ</option></select></div>
+            <div class="field"><label for="customer-date">希望日 *</label><input id="customer-date" name="date" type="date" required></div>
+            <div class="field"><label for="customer-time">希望時刻 *</label><select id="customer-time" name="time" required><option value="">選択してください</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option></select></div>
+          </div>
+          <div class="form-bottom"><button type="button" class="btn btn-outline" id="form-cancel">戻る</button><button class="btn btn-primary" type="submit">デモ内容を確認 <span class="btn-arrow" aria-hidden="true">→</span></button></div>
+        </form>
+      </div>
+      <div class="success" id="success-screen" role="status" aria-live="polite" hidden>
+        <div class="success-icon" aria-hidden="true">✓</div>
+        <h2 id="success-title">Demo complete.</h2>
+        <p><strong>入力内容の確認デモが完了しました。</strong><br>実際の予約は成立していません。<br>入力情報は送信・保存されません。</p>
+        <p id="booking-summary"></p>
+        <button type="button" class="btn btn-primary" id="done-button">ページに戻る <span class="btn-arrow" aria-hidden="true">→</span></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      'use strict';
+      const menuToggle = document.getElementById('menu-toggle');
+      const mobileNav = document.getElementById('mobile-nav');
+      const modal = document.getElementById('booking-modal');
+      const closeButton = document.getElementById('modal-close');
+      const bookingForm = document.getElementById('booking-form');
+      const formScreen = document.getElementById('form-screen');
+      const successScreen = document.getElementById('success-screen');
+      const menuField = document.getElementById('customer-menu');
+      const dateField = document.getElementById('customer-date');
+      const timeField = document.getElementById('customer-time');
+      let previouslyFocused = null;
+
+      const localDateString = (date) => {
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+      };
+      const closeMobileMenu = () => {
+        mobileNav.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded','false');
+        menuToggle.setAttribute('aria-label','メニューを開く');
+      };
+      menuToggle.addEventListener('click', () => {
+        const open = !mobileNav.classList.contains('open');
+        mobileNav.classList.toggle('open', open);
+        menuToggle.setAttribute('aria-expanded', String(open));
+        menuToggle.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');
+      });
+      mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileMenu));
+
+      document.querySelectorAll('[data-filter]').forEach(tab => {
+        tab.addEventListener('click', () => {
+          const selected = tab.dataset.filter;
+          let count = 0;
+          document.querySelectorAll('.service').forEach(item => {
+            const visible = selected === 'all' || item.dataset.category === selected;
+            item.hidden = !visible;
+            if (visible) count++;
+          });
+          document.querySelectorAll('[data-filter]').forEach(t => t.setAttribute('aria-pressed',String(t === tab)));
+          document.getElementById('filter-status').textContent = `${count}件のメニューを表示中 ／ ※ 料金・所要時間はすべて架空の設定です。`;
+        });
+      });
+
+      function openModal(preselectedMenu) {
+        previouslyFocused = document.activeElement;
+        closeMobileMenu();
+        bookingForm.reset();
+        formScreen.hidden = false;
+        successScreen.hidden = true;
+        const today = new Date();
+        const lastDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 90);
+        dateField.min = localDateString(today);
+        dateField.max = localDateString(lastDay);
+        if (preselectedMenu) menuField.value = preselectedMenu;
+        modal.hidden = false;
+        document.body.classList.add('modal-open');
+        requestAnimationFrame(() => document.getElementById('customer-name').focus());
+      }
+      function closeModal() {
+        modal.hidden = true;
+        document.body.classList.remove('modal-open');
+        bookingForm.reset();
+        successScreen.hidden = true;
+        formScreen.hidden = false;
+        if (previouslyFocused && typeof previouslyFocused.focus === 'function') previouslyFocused.focus();
+      }
+      document.querySelectorAll('[data-book]').forEach(button => {
+        button.addEventListener('click', () => openModal(button.dataset.book || ''));
+      });
+      closeButton.addEventListener('click',closeModal);
+      document.getElementById('form-cancel').addEventListener('click',closeModal);
+      document.getElementById('done-button').addEventListener('click',closeModal);
+      modal.addEventListener('click', (event) => { if(event.target === modal) closeModal(); });
+      document.addEventListener('keydown', (event) => {
+        if(event.key === 'Escape') {
+          if (!modal.hidden) closeModal();
+          else closeMobileMenu();
+          return;
+        }
+        if(event.key === 'Tab' && !modal.hidden) {
+          const focusable = [...modal.querySelectorAll('button:not([disabled]),input:not([disabled]),select:not([disabled])')].filter(el => el.getClientRects().length > 0);
+          const first = focusable[0], last = focusable[focusable.length-1];
+          if (!first || !last) return;
+          if(event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+          else if(!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+        }
+      });
+
+      bookingForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if(!bookingForm.reportValidity()) return;
+        const date = dateField.value;
+        const today = localDateString(new Date());
+        if (date < today || date > dateField.max) {
+          dateField.setCustomValidity('今日から90日以内の日付を選んでください。');
+          dateField.reportValidity();
+          return;
+        }
+        dateField.setCustomValidity('');
+        const selectedMenu = menuField.value;
+        const selectedTime = timeField.value;
+        // 値は画面に確認表示するだけ。外部送信、ブラウザ保存、メール送信は一切しません。
+        document.getElementById('booking-summary').textContent = `デモ内容：${date.replaceAll('-', '/')} ${selectedTime} ／ ${selectedMenu}`;
+        formScreen.hidden = true;
+        successScreen.hidden = false;
+        document.getElementById('done-button').focus();
+      });
+      dateField.addEventListener('input', () => dateField.setCustomValidity(''));
+      document.getElementById('copyright-year').textContent = String(new Date().getFullYear());
+    })();
+  </script>
+</body>
+</html>
